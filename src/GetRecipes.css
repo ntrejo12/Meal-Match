@@ -1,0 +1,8 @@
+
+.card-scroll{
+    overflow-y: auto;
+}
+
+.recipe-card{
+    padding: 2%;
+}
