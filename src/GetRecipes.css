@@ -1,3 +1,22 @@
+@font-face {
+    font-family: 'Winkle';
+    src: url(fonts/Winkle-Regular.ttf) format('truetype');
+    /* source: https://www.dafont.com/winkle.font*/
+  }
+  @font-face {
+    font-family: 'Honey Salt';
+    src: url(fonts/Honey-Salt.otf) format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'Milkshot';
+    src: url(fonts/Milkshot.otf) format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'Study Case';
+    src: url(fonts/Study-Case.otf) format('truetype');
+  }
 
 .card-scroll{
     overflow-y: auto;
@@ -5,4 +24,20 @@
 
 .recipe-card{
     padding: 2%;
+}
+
+.recipe-name{
+    font-family: "Study Case", serif;
+}
+
+.recipe-action-btn{
+    background-color: transparent;
+    border: none;
+    font-size: 25px;
+    outline: none;
+    color: grey;
+}
+
+.recipe-action-btn:hover{
+    cursor: pointer;
 }

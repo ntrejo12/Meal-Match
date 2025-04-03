@@ -23,6 +23,19 @@ function GetRecipes() {
   const [allRecipes, setAllRecipes] = useState([]);
   // react hooks can't be used inside async functions
 
+  // use state hook to track which recipes are liked
+  const [likedRecipes, setLikedRecipes] = useState({});
+
+  // function to track which recipes are liked
+  function toggleLike(id) {
+    // recieves recipe ID
+    setLikedRecipes((prev) => ({
+      // updates the state
+      ...prev, // copies the old object (spread syntax)
+      [id]: !prev[id], // flips the value, if true, becomes false, vice versa
+    }));
+  }
+
   async function getRecipe() {
     try {
       const apiKey = "92185b09f819417b8a184b00482ef799";
@@ -79,16 +92,64 @@ function GetRecipes() {
 
   return (
     <>
-    {/* style MUI directly using sx prop */}
-    {/*column spacing sets horizontal space btw columns and is responsive depending on screen size*/}
-    {/* sx={{ border: "1px solid black" }} */}
-      <Grid container rowSpacing={0} columnSpacing={{ xs: 3, sm: 7, md: 2 }} sx={{ justifyContent: "space-between", alignItems: "center"}}> 
+    {/* favorites menu dropdown */}
+      <div className="dropdown">
+        <button
+          className="btn btn-secondary dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Favorites
+        </button>
+        <ul className="dropdown-menu">
+          <li>
+            <a className="dropdown-item" href="#">
+              Action
+            </a>
+          </li>
+          <li>
+            <hr className="dropdown-divider"></hr>
+          </li>
+          <li>
+            <a className="dropdown-item" href="#">
+              Another action
+            </a>
+          </li>
+          <li>
+            <hr className="dropdown-divider"></hr>
+          </li>
+          <li>
+            <a className="dropdown-item" href="#">
+              Something else here
+            </a>
+          </li>
+        </ul>
+      </div>
+      {/* style MUI directly using sx prop */}
+      {/*column spacing sets horizontal space btw columns and is responsive depending on screen size*/}
+      {/* sx={{ border: "1px solid black" }} */}
+      <Grid
+        container
+        rowSpacing={0}
+        columnSpacing={{ xs: 3, sm: 7, md: 2 }}
+        sx={{ justifyContent: "space-between", alignItems: "center" }}
+      >
         {/*curly braces for variables, css or text in quotation*/}
         {allRecipes?.map((recipe, index) => (
           <div key={index} className="recipe-card">
             <Grid size={12}>
               {/*set consisten width and height*/}
-              <Card style={{ width: 500, height: 350, display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: "scroll"}}>
+              <Card
+                style={{
+                  width: 400,
+                  height: 350,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  overflow: "scroll",
+                }}
+              >
                 <CardMedia
                   component="img"
                   alt="green iguana"
@@ -97,8 +158,7 @@ function GetRecipes() {
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    <div>
-                      Name:
+                    <div className="recipe-name">
                       <a target="_blank" href={recipe?.sourceUrl}>
                         {recipe?.title}
                       </a>
@@ -114,6 +174,9 @@ function GetRecipes() {
                             : ingredient.name}
                         </span>
                       ))}
+                      <br></br>
+                      <br></br>
+                      Instructions:
                       {recipe?.analyzedInstructions.map((instruction) => (
                         <ol>
                           {instruction.steps?.map((step) => (
@@ -125,11 +188,30 @@ function GetRecipes() {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  {/* add print */}
-                  <Button size="small">Add to favorites</Button>
-                  <Button size="small" onClick={() => window.print()}>
-                    Print
-                  </Button>
+                  {/* ADD TO FAVORITES BUTTON */}
+                  <button
+                    className="recipe-action-btn"
+                    onClick={() => toggleLike(recipe.id)} // calls toggle function for current recipe
+                    style={{ color: likedRecipes[recipe.id] ? "red" : "grey" }} // if true (is liked), turn icon red, if false, color grey
+                  >
+                    {/* <i className="fa-regular fa-heart"></i> */}
+                    {/* ? : ternary operator
+                    condition ? valueIfTrue : valueIfFalse */}
+                    <i
+                      className={
+                        likedRecipes[recipe.id]
+                          ? "fa-solid fa-heart"
+                          : "fa-regular fa-heart"
+                      }
+                    ></i>
+                  </button>
+                  {/* PRINT BUTTON */}
+                  <button
+                    className="recipe-action-btn"
+                    onClick={() => window.print()}
+                  >
+                    <i className="fa-solid fa-print"></i>
+                  </button>
                 </CardActions>
               </Card>
             </Grid>
