@@ -8,8 +8,22 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import "./GetStarted.css";
 
 function GetStarted() {
-  const { diet, setDiet, ingredient, setIngredient, vitaminD, setVitaminD, 
-    vitaminC, setVitaminC, fiber, setFiber, protein, setProtein, time, setTime } = useContext(Context);
+  const {
+    diet,
+    setDiet,
+    ingredient,
+    setIngredient,
+    vitaminD,
+    setVitaminD,
+    vitaminC,
+    setVitaminC,
+    fiber,
+    setFiber,
+    protein,
+    setProtein,
+    time,
+    setTime,
+  } = useContext(Context);
 
   // const [ingredient, setIngredient] = useState("");
   // const [diet, setDiet] = useState("0");
@@ -66,7 +80,7 @@ function GetStarted() {
   ];
 
   const Time = (event) => {
-    setTime(event.target.value)
+    setTime(event.target.value);
   };
 
   function valuetext(value) {
@@ -126,59 +140,60 @@ function GetStarted() {
               <label htmlFor="vitamin-select" className="form-label">
                 Search by Nutrients
               </label>
-            </div>
-            <div>
-              {" "}
-              {/* nutrients */}
-              <div className="form-check form-check-inline">
-                {/* ()=> it waits until you actually click the checkbox, otherwise on load it'll jsut go between the function and textbox click */}
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="inlineCheckbox1"
-                  value={vitaminD}
-                  onChange={() => VitaminD()}
-                />
-                <label className="form-check-label" htmlFor="inlineCheckbox1">
-                  Vitamin D
-                </label>
-              </div>
-              <div className="form-check form-check-inline">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="inlineCheckbox2"
-                  value={vitaminC}
-                  onChange={() => VitaminC()}
-                />
-                <label className="form-check-label" htmlFor="inlineCheckbox2">
-                  Vitamin C
-                </label>
-              </div>
-              <div className="form-check form-check-inline">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="inlineCheckbox2"
-                  value={fiber}
-                  onChange={() => Fiber()}
-                />
-                <label className="form-check-label" htmlFor="inlineCheckbox2">
-                  Fiber
-                </label>
-              </div>
-              <div className="form-check form-check-inline">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="inlineCheckbox2"
-                  value={protein}
-                  onChange={() => Protein()}
-                />
-                <label className="form-check-label" htmlFor="inlineCheckbox2">
-                  Protein
-                </label>
-              </div>
+              <div>
+                {" "}
+                {/* nutrients */}
+                <div className="form-check form-check-inline">
+                  {/* ()=> it waits until you actually click the checkbox, otherwise on load it'll jsut go between the function and textbox click */}
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="inlineCheckbox1"
+                    value={vitaminD}
+                    onChange={() => VitaminD()}
+                  />
+                  <label className="form-check-label" htmlFor="inlineCheckbox1">
+                    Vitamin D
+                  </label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="inlineCheckbox2"
+                    value={vitaminC}
+                    onChange={() => VitaminC()}
+                  />
+                  <label className="form-check-label" htmlFor="inlineCheckbox2">
+                    Vitamin C
+                  </label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="inlineCheckbox2"
+                    value={fiber}
+                    onChange={() => Fiber()}
+                  />
+                  <label className="form-check-label" htmlFor="inlineCheckbox2">
+                    Fiber
+                  </label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="inlineCheckbox2"
+                    value={protein}
+                    onChange={() => Protein()}
+                  />
+                  <label className="form-check-label" htmlFor="inlineCheckbox2">
+                    Protein
+                  </label>
+                </div>
+              </div>{" "}
+              {/*end here*/}
             </div>
             <div className="mb-3">
               <label htmlFor="formGroupExampleInput2" className="form-label">

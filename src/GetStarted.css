@@ -15,11 +15,12 @@ body {
 
 .card-title {
   color: black;
-  transform: translate(30%, -0%);
+  transform: translate(30%, 20%);
 }
 
 .card-text {
   color: black;
+  transform: translate(30%, 20%);
 }
 
 .form-label {

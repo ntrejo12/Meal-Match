@@ -41,3 +41,19 @@
 .recipe-action-btn:hover{
     cursor: pointer;
 }
+
+.custom-white{
+  background-color: white;
+  color: black;
+}
+
+.dropdown{
+  position: absolute;
+  top: 20px;
+  right: 30px;
+}
+
+.btn-secondary.dropdown-toggle{
+  border: none;
+  background-color: #F28482;
+}

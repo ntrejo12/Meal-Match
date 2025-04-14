@@ -24,17 +24,56 @@ function GetRecipes() {
   // react hooks can't be used inside async functions
 
   // use state hook to track which recipes are liked
-  const [likedRecipes, setLikedRecipes] = useState({});
+  const [likedRecipes, setLikedRecipes] = useState([]);
 
-  // function to track which recipes are liked
+  const [newRecipeID, setNewRecipeID] = useState([]);
+
   function toggleLike(id) {
-    // recieves recipe ID
-    setLikedRecipes((prev) => ({
-      // updates the state
-      ...prev, // copies the old object (spread syntax)
-      [id]: !prev[id], // flips the value, if true, becomes false, vice versa
-    }));
+    // check if recipe is already in the likedRecipes array
+    // find() returns recipe object if found
+    // arrow function:
+    // (recipe) - parameter, represents one item in an array
+    // => is shorthand for defining functions
+    // recipe.id === id is the actual condition your checking
+    // comparing the id property of the current recipe object
+    // to variable id that was passed in
+    const isLiked = likedRecipes.find((recipe) => recipe.id === id);
+
+    // if recipe is already liked, handles unliking
+    if (isLiked) {
+      // creates a new array w/o recipe you unlike and updates state w/ new filtered array
+      // returns new array, doesn't mutate original
+      setLikedRecipes(likedRecipes.filter((recipe) => recipe.id !== id));
+      setNewRecipeID(newRecipeID.filter((newRecipeID) => newRecipeID !== id));
+    } else {
+      // if recipe is not already liked, handles liking
+      // look for recipe object in allRecipes
+      const favorite = allRecipes.find((recipe) => id === recipe.id);
+      setLikedRecipes([...likedRecipes, favorite]);
+      setNewRecipeID([...newRecipeID, id]);
+    }
+    // console.log('Find index', likedRecipes.findIndex((recipe) => id === recipe.id))
+    // check likedrecipes
+    // 2 equal signs, determines if actually equal
+    // if (likedRecipes.findIndex((recipe) => id === recipe.id) !== -1) {
+    //   const index = likedRecipes.findIndex((recipe) => id === recipe.id);
+    //   // update state variable
+    //   setLikedRecipes(likedRecipes.splice(index-1, 1));
+    //   const idIndex = newRecipeID.findIndex((recipe) => id === recipe);
+    //   console.log('UNLIKED ID index', idIndex)
+    //   // splice changes original array and returns removed elements
+    // setLikedRecipes() sets state to just removed element
+    //   setNewRecipeID(newRecipeID.splice(idIndex-1, 1))
+    //   console.log('UNLIKED Recipe ID', newRecipeID)
+    // } else {
+    //   // recieves recipe ID
+    //   const favorite = allRecipes.find((recipe) => id === recipe.id);
+    //   setLikedRecipes([...likedRecipes, favorite]);
+    //   setNewRecipeID([...newRecipeID, id])
+    // }
   }
+  console.log("liked recipes array", likedRecipes);
+  console.log("LIKED Recipe ID", newRecipeID);
 
   async function getRecipe() {
     try {
@@ -92,7 +131,7 @@ function GetRecipes() {
 
   return (
     <>
-    {/* favorites menu dropdown */}
+      {/* favorites menu dropdown */}
       <div className="dropdown">
         <button
           className="btn btn-secondary dropdown-toggle"
@@ -103,121 +142,129 @@ function GetRecipes() {
           Favorites
         </button>
         <ul className="dropdown-menu">
-          <li>
-            <a className="dropdown-item" href="#">
-              Action
-            </a>
-          </li>
-          <li>
+          {likedRecipes?.map((recipe) => {
+            const { id, title, sourceUrl } = recipe;
+            return (
+              <li key={id}>
+                <a className="dropdown-item" href={sourceUrl} target="_blank">
+                  {recipe.title}
+                </a>
+              </li>
+            );
+          })}
+          {/* <li>
             <hr className="dropdown-divider"></hr>
-          </li>
-          <li>
-            <a className="dropdown-item" href="#">
-              Another action
-            </a>
-          </li>
-          <li>
-            <hr className="dropdown-divider"></hr>
-          </li>
-          <li>
-            <a className="dropdown-item" href="#">
-              Something else here
-            </a>
-          </li>
+          </li> */}
         </ul>
       </div>
       {/* style MUI directly using sx prop */}
       {/*column spacing sets horizontal space btw columns and is responsive depending on screen size*/}
       {/* sx={{ border: "1px solid black" }} */}
-      <Grid
-        container
-        rowSpacing={0}
-        columnSpacing={{ xs: 3, sm: 7, md: 2 }}
-        sx={{ justifyContent: "space-between", alignItems: "center" }}
-      >
-        {/*curly braces for variables, css or text in quotation*/}
-        {allRecipes?.map((recipe, index) => (
-          <div key={index} className="recipe-card">
-            <Grid size={12}>
-              {/*set consisten width and height*/}
-              <Card
-                style={{
-                  width: 400,
-                  height: 350,
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  overflow: "scroll",
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  alt="green iguana"
-                  height="140"
-                  image={recipe?.image}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    <div className="recipe-name">
-                      <a target="_blank" href={recipe?.sourceUrl}>
-                        {recipe?.title}
-                      </a>
-                    </div>
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                    <div className="ingredients">
-                      <div>Ingredients needed:</div>
-                      {recipe?.extendedIngredients.map((ingredient, index) => (
-                        <span key={index}>
-                          {index != recipe?.extendedIngredients.length - 1
-                            ? ingredient.name + ", "
-                            : ingredient.name}
-                        </span>
-                      ))}
-                      <br></br>
-                      <br></br>
-                      Instructions:
-                      {recipe?.analyzedInstructions.map((instruction) => (
-                        <ol>
-                          {instruction.steps?.map((step) => (
-                            <li>{step.step}</li>
-                          ))}
-                        </ol>
-                      ))}
-                    </div>
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  {/* ADD TO FAVORITES BUTTON */}
-                  <button
-                    className="recipe-action-btn"
-                    onClick={() => toggleLike(recipe.id)} // calls toggle function for current recipe
-                    style={{ color: likedRecipes[recipe.id] ? "red" : "grey" }} // if true (is liked), turn icon red, if false, color grey
-                  >
-                    {/* <i className="fa-regular fa-heart"></i> */}
-                    {/* ? : ternary operator
+      <div style={{ paddingTop: "50px" }}>
+        <Grid
+          container
+          rowSpacing={0}
+          columnSpacing={{ xs: 3, sm: 7, md: 2 }}
+          sx={{ justifyContent: "space-between", alignItems: "center" }}
+        >
+          {/*curly braces for variables, css or text in quotation*/}
+          {allRecipes?.map((recipe, index) => (
+            <div key={index} className="recipe-card">
+              <Grid size={12}>
+                {/*set consisten width and height*/}
+                <Card
+                  style={{
+                    width: 400,
+                    height: 350,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    overflow: "scroll",
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    alt="green iguana"
+                    height="140"
+                    image={recipe?.image}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      <div className="recipe-name">
+                      {recipe?.title}
+                        {/* <a target="_blank" href={recipe?.sourceUrl}>
+                        </a> */}
+                      </div>
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: "text.secondary" }}
+                    >
+                      <div className="ingredients">
+                        <div>Ingredients needed:</div>
+                        {recipe?.extendedIngredients.map(
+                          (ingredient, index) => (
+                            <span key={index}>
+                              {index != recipe?.extendedIngredients.length - 1
+                                ? ingredient.name + ", "
+                                : ingredient.name}
+                            </span>
+                          )
+                        )}
+                        <br></br>
+                        <br></br>
+                        Instructions:
+                        {recipe?.analyzedInstructions.map((instruction) => (
+                          <ol>
+                            {instruction.steps?.map((step) => (
+                              <li>{step.step}</li>
+                            ))}
+                          </ol>
+                        ))}
+                      </div>
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    {/* ADD TO FAVORITES BUTTON */}
+                    <button
+                      className="recipe-action-btn"
+                      onClick={() => toggleLike(recipe.id)} // calls toggle function for current recipe
+                      style={{
+                        color:
+                          newRecipeID.findIndex(
+                            (item) => recipe.id === item
+                          ) !== -1
+                            ? "red"
+                            : "grey",
+                      }} // if true (is liked), turn icon red, if false, color grey
+                    >
+                      {/* <i className="fa-regular fa-heart"></i> */}
+                      {/* ? : ternary operator
                     condition ? valueIfTrue : valueIfFalse */}
-                    <i
-                      className={
-                        likedRecipes[recipe.id]
-                          ? "fa-solid fa-heart"
-                          : "fa-regular fa-heart"
-                      }
-                    ></i>
-                  </button>
-                  {/* PRINT BUTTON */}
-                  <button
-                    className="recipe-action-btn"
-                    onClick={() => window.print()}
-                  >
-                    <i className="fa-solid fa-print"></i>
-                  </button>
-                </CardActions>
-              </Card>
-            </Grid>
-          </div>
-        ))}
-      </Grid>
+                      <i
+                        className={
+                          newRecipeID.findIndex(
+                            (item) => recipe.id === item
+                          ) !== -1
+                            ? "fa-solid fa-heart"
+                            : "fa-regular fa-heart"
+                        }
+                      ></i>
+                    </button>
+                    {/* PRINT BUTTON */}
+                    <button
+                      className="recipe-action-btn"
+                      onClick={() => window.print()}
+                    >
+                      <i className="fa-solid fa-print"></i>
+                    </button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            </div>
+          ))}
+        </Grid>
+      </div>
     </>
   );
 }
