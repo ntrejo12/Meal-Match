@@ -51,25 +51,6 @@ function GetRecipes() {
       setLikedRecipes([...likedRecipes, favorite]);
       setNewRecipeID([...newRecipeID, id]);
     }
-    // console.log('Find index', likedRecipes.findIndex((recipe) => id === recipe.id))
-    // check likedrecipes
-    // 2 equal signs, determines if actually equal
-    // if (likedRecipes.findIndex((recipe) => id === recipe.id) !== -1) {
-    //   const index = likedRecipes.findIndex((recipe) => id === recipe.id);
-    //   // update state variable
-    //   setLikedRecipes(likedRecipes.splice(index-1, 1));
-    //   const idIndex = newRecipeID.findIndex((recipe) => id === recipe);
-    //   console.log('UNLIKED ID index', idIndex)
-    //   // splice changes original array and returns removed elements
-    // setLikedRecipes() sets state to just removed element
-    //   setNewRecipeID(newRecipeID.splice(idIndex-1, 1))
-    //   console.log('UNLIKED Recipe ID', newRecipeID)
-    // } else {
-    //   // recieves recipe ID
-    //   const favorite = allRecipes.find((recipe) => id === recipe.id);
-    //   setLikedRecipes([...likedRecipes, favorite]);
-    //   setNewRecipeID([...newRecipeID, id])
-    // }
   }
   console.log("liked recipes array", likedRecipes);
   console.log("LIKED Recipe ID", newRecipeID);
