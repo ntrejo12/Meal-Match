@@ -8,18 +8,17 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Button,
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import "./GetRecipes.css";
 
 function GetRecipes() {
-  // state variable which will store a recipe
 
   const { diet, ingredient, vitaminD, vitaminC, fiber, protein, time } =
     useContext(Context);
 
+  // state variable which will store a recipe
   const [allRecipes, setAllRecipes] = useState([]);
   // react hooks can't be used inside async functions
 
@@ -77,14 +76,12 @@ function GetRecipes() {
 
   async function getRecipe() {
     try {
-      const apiKey = "92185b09f819417b8a184b00482ef799";
+      // const apiKey = API KEY HERE;
       const fillIngredients = true;
       const instructionsRequired = true;
       const addRecipeInformation = true;
       const addRecipeInstructions = true;
       const number = 6;
-
-      // what's the difference between ' and `
 
       let url = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&fillIngredients=${fillIngredients}&instructionsRequired=${instructionsRequired}&addRecipeInformation=${addRecipeInformation}&addRecipeInstructions=${addRecipeInstructions}&number=${number}`;
 
@@ -117,8 +114,6 @@ function GetRecipes() {
 
       // //making api call `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&diet=${diet}&excludeIngredients=${ingredient}&fillIngredients=${fillIngredients}&instructionsRequired=${instructionsRequired}&addRecipeInformation=${addRecipeInformation}&addRecipeInstructions=${addRecipeInstructions}&number=${number}`
       let resp = await axios.get(url);
-
-      // get a random recipe from array returned
 
       setAllRecipes(resp.data.results);
     } catch (e) {
